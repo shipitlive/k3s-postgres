@@ -1,0 +1,10 @@
+replicaCount: 1
+
+postgresqlUsername: admin
+postgresqlPassword: password
+postgresqlDatabase: mydatabase
+
+service:
+  type: NodePort
+  port: 5432
+  nodePort: null

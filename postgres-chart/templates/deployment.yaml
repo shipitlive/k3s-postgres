@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: { { .Release.Name } }
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: bitnami/postgresql:latest
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRESQL_USERNAME
+              value: { { .Values.postgresqlUsername } }
+            - name: POSTGRESQL_PASSWORD
+              value: { { .Values.postgresqlPassword } }
+            - name: POSTGRESQL_DATABASE
+              value: { { .Values.postgresqlDatabase } }
+          ports:
+            - name: postgresql
+              containerPort: { { .Values.service.port } }
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: postgresql-pvc
